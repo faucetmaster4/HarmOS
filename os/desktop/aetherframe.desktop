@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=AetherFrame
+GenericName=HarmOS Desktop
+Comment=HarmOS AI operating environment — waits for the Nexus backend, then opens the desktop
+# Launch order matters: aetherframe-launch waits for 127.0.0.1:8787 to answer before
+# opening the UI, so the user never sees a desktop wired to a dead backend.
+Exec=/opt/harmos/os/desktop/aetherframe-launch.sh
+Icon=/opt/harmos/os/desktop/harmos-mark.svg
+Terminal=false
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=2
+OnlyShowIn=XFCE;
+Categories=System;Utility;

@@ -1,0 +1,16 @@
+{
+  "built": true,
+  "filename": "HarmOS-0.1.0-x86_64.ova",
+  "path": "release/HarmOS-0.1.0-x86_64.ova",
+  "sizeBytes": 1059563520,
+  "sha256": "e36c49ac8be26a8ec767277ccea338284bf1d5273245e101427d4097722276dd",
+  "vmdkName": "HarmOS-0.1.0-x86_64-disk001.vmdk",
+  "vmdkSizeBytes": 1059547136,
+  "virtualDiskGb": 30,
+  "guestOs": "Ubuntu 24.04 LTS (Noble Numbat) x86_64",
+  "kernelVersion": "6.8.0-147-generic",
+  "builtAt": "2026-10-24T02:11:40.400Z",
+  "qemuBootVerified": true,
+  "smokeSummary": "QEMU x86_64 guest boot verified — RESULT: 18 passed, 0 failed, 2 skipped",
+  "smokeTranscript": "harmos login: ===HARMOS_SMOKE_BEGIN===\r\nLinux 6.8.0-147-generic x86_64 GNU/Linux\r\nHEALTH=ok\r\nAETHERFRAME_TITLE=<title>HarmOS 0.1.0-alpha — AetherFrame</title>\r\nHarmOS appliance smoke test — 2026-10-24T02:09:50+00:00\r\n== 1. Linux services ==\r\n  PASS  systemd is PID 1\r\n  PASS  harmos-firstboot completed\r\n  PASS  harmos-nexus.service is active\r\n  PASS  no failed units\r\n== 2. Backend readiness ==\r\n  PASS  Nexus answers on 127.0.0.1:8787\r\n  PASS  backend NOT bound to 0.0.0.0\r\n  PASS  no public listener on 8787\r\n== 3. Privilege boundaries ==\r\n  PASS  service runs as harmos-svc\r\n  PASS  harmos-svc has no sudo\r\n  PASS  harmos-svc cannot write /opt\r\n  PASS  build sudoers file removed\r\n  PASS  SSH not enabled by default\r\n== 4. Secrets & KaliOS hardening ==\r\n  PASS  nexus.env is not world-readable\r\n  PASS  no API keys in /opt/harmos\r\n  PASS  vault dir is 0700\r\n  PASS  KaliOS sysctl hardening active\r\n== 5. Desktop session ==\r\n  SKIP  desktop checks  (no DISPLAY — run from a terminal inside the XFCE session)\r\n== 6. Real agent file task ==\r\n  SKIP  agent file task  (no model configured, or /api/run unavailable — configure a model first)\r\n== 7. Persistence ==\r\n  PASS  vault database exists\r\n  PASS  system probe recorded\r\n\r\nRESULT: 18 passed, 0 failed, 2 skipped\r\nSMOKE_EXIT=0\r\n===HARMOS_SMOKE_END==="
+}

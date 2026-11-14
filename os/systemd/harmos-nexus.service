@@ -1,0 +1,52 @@
+[Unit]
+Description=HarmOS Nexus — AI orchestration core (StarNet-derived harness)
+Documentation=file:///opt/harmos/docs/HARMOS_ARCHITECTURE.md
+After=network.target harmos-firstboot.service
+Wants=harmos-firstboot.service
+
+[Service]
+Type=simple
+User=harmos-svc
+Group=harmos-svc
+EnvironmentFile=/etc/harmos/nexus.env
+WorkingDirectory=/opt/harmos
+ExecStartPre=+/usr/bin/install -d -o harmos-svc -g harmos-svc -m 0750 /var/lib/harmos /var/log/harmos
+ExecStart=/usr/bin/node /opt/harmos/sidecar/index.js
+Restart=on-failure
+RestartSec=3s
+TimeoutStartSec=120
+
+# --- Defensive boundaries (KaliOS baseline). The AI core runs unprivileged. ---
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/var/lib/harmos /var/lib/harmos-svc /var/log/harmos /home/harmos/HarmOS
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+RestrictSUIDSGID=yes
+RestrictRealtime=yes
+RestrictNamespaces=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=no
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
+CapabilityBoundingSet=
+AmbientCapabilities=
+# Loopback + outbound only. The appliance never listens on a routable interface.
+IPAddressDeny=any
+IPAddressAllow=localhost
+# Resource guard rails for a 4 GB guest.
+MemoryHigh=2G
+MemoryMax=3G
+TasksMax=512
+
+StandardOutput=append:/var/log/harmos/nexus.log
+StandardError=append:/var/log/harmos/nexus.err
+
+[Install]
+WantedBy=multi-user.target

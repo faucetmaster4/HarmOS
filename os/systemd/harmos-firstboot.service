@@ -1,0 +1,17 @@
+[Unit]
+Description=HarmOS first-boot appliance initialisation (identity, keys, resource probe)
+Documentation=file:///opt/harmos/docs/WINDOWS_INSTALL.md
+After=local-fs.target systemd-tmpfiles-setup.service
+Before=lightdm.service display-manager.service harmos-nexus.service
+ConditionPathExists=!/var/lib/harmos/.firstboot-done
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/harmos-firstboot
+TimeoutStartSec=300
+StandardOutput=journal+console
+StandardError=journal+console
+
+[Install]
+WantedBy=multi-user.target

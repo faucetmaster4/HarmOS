@@ -1,0 +1,44 @@
+#cloud-config
+# Ubuntu 24.04 LTS (subiquity) autoinstall for the HarmOS build VM.
+# This file configures the BUILD machine only. The password set here is replaced on
+# first boot by os/firstboot/harmos-firstboot.sh (chage -d 0 forces a reset) and the
+# SSH host keys written here are deleted by 99-cleanup.sh before export.
+autoinstall:
+  version: 1
+  locale: en_US.UTF-8
+  keyboard:
+    layout: us
+  refresh-installer:
+    update: false
+  apt:
+    geoip: true
+    preserve_sources_list: false
+  storage:
+    layout:
+      name: lvm
+    swap:
+      size: 2G
+  identity:
+    hostname: harmos
+    username: harmos
+    # mkpasswd -m sha-512 'harmos-build-only'  — build-time only, rotated on first boot.
+    password: "$6$harmosbuild$2Qk0Jm2xqBt0lCq0nSPMVjH0E0JMRh4dKqgqgqS0Xk5bMEQJoqx1ZzFJm6.iNxkZ0Qp8t7sZLw0Jm9Fd3hWeY1"
+  ssh:
+    install-server: true
+    allow-pw: true
+  packages:
+    - build-essential
+    - curl
+    - git
+    - ca-certificates
+    - gnupg
+    - sudo
+    - python3
+    - sqlite3
+  user-data:
+    disable_root: true
+  late-commands:
+    # Passwordless sudo for the build stage only; 99-cleanup.sh removes this file.
+    - echo 'harmos ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/90-harmos-build
+    - chmod 0440 /target/etc/sudoers.d/90-harmos-build
+    - curtin in-target --target=/target -- systemctl enable ssh

@@ -1,0 +1,14 @@
+# /etc/fail2ban/jail.d/harmos.local
+# KaliOS Brute-Force & Credential-Stuffing Prevention (systemd-journald native)
+[DEFAULT]
+bantime   = 1h
+findtime  = 10m
+maxretry  = 4
+backend   = systemd
+banaction = ufw
+
+[sshd]
+enabled = false
+mode    = aggressive
+port    = ssh
+backend = systemd
